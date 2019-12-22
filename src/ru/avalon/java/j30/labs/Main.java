@@ -1,9 +1,14 @@
 package ru.avalon.java.j30.labs;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Properties;
+
 
 /**
  * Лабораторная работа №3
@@ -59,7 +64,7 @@ public class Main {
         /*
          * TODO #02 Реализуйте метод getUrl
          */
-        throw new UnsupportedOperationException("Not implemented yet!");
+        return "jdbc:derby://localhost:1527/sample";
     }
     /**
      * Возвращает параметры соединения
@@ -71,7 +76,38 @@ public class Main {
         /*
          * TODO #03 Реализуйте метод getProperties
          */
-        throw new UnsupportedOperationException("Not implemented yet!");
+        Properties prop = new Properties();
+        FileReader reader = null; 
+        try
+        {
+            reader = new FileReader("../src/Properties/connectDB.properties");
+            prop.load(reader);
+        }
+        catch(FileNotFoundException e)
+        {
+          System.out.println("Error FileNotFound "+e.toString());
+        }
+        catch(IOException e)
+        {
+          System.out.println("Error IOException "+e.toString());
+        }
+        finally
+        {
+            try
+            {
+                if (reader != null)
+                reader.close();
+            }
+            catch(IOException e)
+            {
+                System.out.println("Error IOException "+e.toString());
+            }
+            return prop;
+        }
+        
+        
+        
+       // throw new UnsupportedOperationException("Not implemented yet!");
     }
     /**
      * Возвращает соединение с базой данных Sample
@@ -83,7 +119,14 @@ public class Main {
         /*
          * TODO #04 Реализуйте метод getConnection
          */
-        throw new UnsupportedOperationException("Not implemented yet!");
+        String url = getUrl();
+
+
+        Properties connectonProperties = getProperties();
+        return DriverManager.getConnection(url, connectonProperties);
+
+
+        //throw new UnsupportedOperationException("Not implemented yet!");
     }
     
 }
